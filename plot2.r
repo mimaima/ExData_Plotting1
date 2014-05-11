@@ -1,20 +1,23 @@
 # 05/10/2014
-# Course Project 1 related to the course "Exploratory Data Analysis" of Coursera.
+# Exploratory Data Analysis Course Project 1
 # plot2
 
+# if you do not have sqldf package, you can install sqldf package by running the following command: install.packages("sqldf")
+require(sqldf)
+
+# clean all objects in R memory
 rm(list=ls())
-#reading data into R (you need to put the data in a sub-directory named on "Explor"):
-data<- read.table("./household_power_consumption.txt", sep=";",nrows= 2075259, header=TRUE, quote= "", strip.white=TRUE, stringsAsFactors = FALSE, na.strings= "?")
 
-# Subsetting the full data to obtain the data related to two days: 
-subdata<- subset(data, (data$Date == "1/2/2007" | data$Date== "2/2/2007")) 
+# read 1/2/2007 and 2/2/2007 data from household_power_consumption.txt in the same directory
+file <- "./household_power_consumption.txt"
+data <- read.csv.sql(file, sql = "select * from file where Date in ('1/2/2007','2/2/2007')", header = TRUE, sep = ";")
 
-# Changing the class of Date variable from character to Date: 
-subdata$Date <- as.Date(subdata$Date, format = "%d/%m/%Y")
-# Combining the Date and Time variable and creating a new column in dataset named "DateTime":
-subdata$DateTime <- as.POSIXct(paste(subdata$Date, subdata$Time))
+# Change Date variable from String to Date
+data$Date <- as.Date(data$Date, format = "%d/%m/%Y")
+# Create a new column DateTime from Date and Time
+data$DateTime <- as.POSIXct(paste(data$Date, data$Time))
 
-# Creating the plot2:
+# create plot2.png
 png("plot2.png", width=480, height= 480)
-plot(subdata$DateTime, subdata$Global_active_power, type= "l", lwd=1, ylab= "Global Active Power (kilowatts)", xlab="")
+plot(data$DateTime, data$Global_active_power, type= "l", lwd=1, ylab= "Global Active Power (kilowatts)", xlab="")
 dev.off()
