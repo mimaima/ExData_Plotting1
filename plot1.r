@@ -1,15 +1,18 @@
 # 05/10/2014
-# Course Project 1 related to the course "Exploratory Data Analysis" of Coursera.
+# Exploratory Data Analysis Course Project 1
 # plot1
 
+# if you do not have sqldf package, you can install sqldf package by running the following command: install.packages("sqldf")
+require(sqldf)
+
+# clean all objects in R memory
 rm(list=ls())
-#reading data into R (you need to put the data in a sub-directory named on "Explor"):
-data<- read.table("./household_power_consumption.txt", sep=";",nrows= 2075259, header=TRUE, quote= "", strip.white=TRUE, stringsAsFactors = FALSE, na.strings= "?")
 
-# Subsetting the full data to obtain the data related to two days: 
-subdata<- subset(data, (data$Date == "1/2/2007" | data$Date== "2/2/2007")) 
+# read 1/2/2007 and 2/2/2007 data from household_power_consumption.txt in the same directory
+file <- "./household_power_consumption.txt"
+data <- read.csv.sql(file, sql = "select * from file where Date in ('1/2/2007','2/2/2007')", header = TRUE, sep = ";")
 
-# creating plot1
+# create plot1.png
 png("plot1.png", width=480, height= 480)
-hist(subdata$Global_active_power, col= "red", xlab= "Global Active Power (kilowatts)", ylab= "Frequency", main= "Global Active Power")
+hist(data$Global_active_power, col= "red", xlab= "Global Active Power (kilowatts)", ylab= "Frequency", main= "Global Active Power")
 dev.off()
