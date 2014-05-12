@@ -88,6 +88,7 @@ When you are finished with the assignment, push your git repository to
 GitHub so that the GitHub version of your repository is up to
 date. There should be four PNG files and four R code files.
 
+four image files is saved in folder "figure".
 
 The four plots that you will need to construct are shown below. 
 
